@@ -1,8 +1,19 @@
+const spinnerDisplayToggle = displayStyle => {
+    document.getElementById("spinner").style.display = displayStyle;
+}
+const searchResultsDisplayToggle = () => {
+    document.getElementById("found-items").innerText = "";
+    document.getElementById("search-result").textContent = "";
+}
+spinnerDisplayToggle("none");
 const searchBook = () => {
     const searchText = document.getElementById("search-field").value;
     loadJsonData(searchText);
+    document.getElementById("search-field").value = "";
 };
 const loadJsonData = async searchText => {
+    spinnerDisplayToggle("block");
+    searchResultsDisplayToggle();
     const url = `https://openlibrary.org/search.json?q=${searchText}`;
     const response = await fetch(url);
     const jsonData = await response.json();
@@ -12,11 +23,12 @@ const loadJsonData = async searchText => {
 const displayFoundItemsQuantity = itemsCount => {
     const foundItems = document.getElementById("found-items");
     foundItems.innerText = itemsCount;
+    spinnerDisplayToggle("none");
 };
 const displayRequiredBooks = books => {
+    spinnerDisplayToggle("none");
     const searchResult = document.getElementById("search-result");
     books.forEach(book => {
-        // console.log(book);
         const div = document.createElement("div");
         div.classList.add("col");
         div.innerHTML = `
