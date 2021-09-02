@@ -1,28 +1,50 @@
 const spinnerDisplayToggle = displayStyle => {
     document.getElementById("spinner").style.display = displayStyle;
-}
+};
 const searchResultsDisplayToggle = () => {
     document.getElementById("found-items").innerText = "";
     document.getElementById("search-result").textContent = "";
-}
+};
+const errorMessageToggle = () => {
+    document.getElementById("error-messages").innerText = "";
+};
+const errorMessage = message => {
+    document.getElementById("error-messages").innerText = message;
+};
 spinnerDisplayToggle("none");
 const searchBook = () => {
-    const searchText = document.getElementById("search-field").value;
-    loadJsonData(searchText);
-    document.getElementById("search-field").value = "";
+    const searchTextInput = document.getElementById("search-field");
+    const searchText = searchTextInput.value;
+    if (searchTextInput.value === "") {
+        spinnerDisplayToggle("none");
+        searchResultsDisplayToggle();
+        errorMessage("Search field can not be empty!");
+    }
+    else {
+        spinnerDisplayToggle("block");
+        searchResultsDisplayToggle();
+        errorMessageToggle();
+        loadJsonData(searchText);
+    }
+    searchTextInput.value = "";
 };
 const loadJsonData = async searchText => {
-    spinnerDisplayToggle("block");
-    searchResultsDisplayToggle();
     const url = `https://openlibrary.org/search.json?q=${searchText}`;
     const response = await fetch(url);
     const jsonData = await response.json();
-    displayFoundItemsQuantity(jsonData.numFound); // itemsCount -> numFound
-    displayRequiredBooks(jsonData.docs); // booksLists -> docs
+    if (jsonData.numFound === 0) {
+        spinnerDisplayToggle("none");
+        searchResultsDisplayToggle();
+        errorMessage("No Results Found!!!");
+    }
+    else {
+        displayFoundItemsQuantity(jsonData.numFound); // itemsCount -> numFound
+        displayRequiredBooks(jsonData.docs); // booksLists -> docs
+    }
 };
 const displayFoundItemsQuantity = itemsCount => {
     const foundItems = document.getElementById("found-items");
-    foundItems.innerText = itemsCount;
+    foundItems.innerText = `Books Found: ${itemsCount}`;
     spinnerDisplayToggle("none");
 };
 const displayRequiredBooks = books => {
