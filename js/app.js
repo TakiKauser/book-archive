@@ -66,7 +66,7 @@ const displayRequiredBooks = books => {
         div.classList.add("col", "shadow", "p-3", "border", "rounded");
         div.innerHTML = `
         <div class="card h-100">
-            <img height="300px" src="https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg" class="card-img-top" alt="...">
+            <img height="300px" src="https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg" class="card-img-top" alt="...">
             <div class="card-body">
                 <h4 class="card-title"><span class="text-secondary">Title:</span> <span class="fw-bold">${book.title}</span></h4>
                 <h5 class="card-title text-secondary">Author: <span class="fw-bold fst-italic">${book.author_name ? book.author_name[0] : "N/A"}</span></h5>
